@@ -4,12 +4,13 @@ class Car {
         this.y = y;
         this.width = width;
         this.height = height;
+        this.angle = 0;
+        this.polygon = this.#createPolygon();
 
         this.speed = 0;
         this.maxSpeed = maxSpeed;
         this.acceleration = 0.2;
         this.friction = 0.05;
-        this.angle = 0;
         this.damaged = false;
         this.useBrain = controlType == 'AI';
 

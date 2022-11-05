@@ -62,7 +62,7 @@ class Sensor {
     #castRays() {
         this.rays = [];
 
-        const forwardRayCount = Math.floor(this.rayCount * 3/4);
+        const forwardRayCount = Math.floor(this.rayCount * 0.75);
         for (let i = 0; i < forwardRayCount; i++) {
             const rayAngle = lerp(
                 this.rayspread / 2,
@@ -81,7 +81,7 @@ class Sensor {
             this.rays.push([start, end]);
         }
 
-        const backwardRayCount = Math.ceil(this.rayCount * 1/4);
+        const backwardRayCount = Math.ceil(this.rayCount * 0.25);
         for (let i = 0; i < backwardRayCount; i++) {
             const rayAngle = Math.PI + lerp(
                 this.rayspread / 3,
