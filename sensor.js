@@ -1,9 +1,9 @@
 class Sensor {
     constructor(car) {
         this.car = car;
-        this.rayCount = 5;
+        this.rayCount = 12;
         this.rayLength = 150;
-        this.rayspread = Math.PI / 2;
+        this.rayspread = Math.PI * (2 / 3);
         
         this.rays = [];
         this.readings = [];
@@ -61,17 +61,41 @@ class Sensor {
 
     #castRays() {
         this.rays = [];
-        for (let i = 0; i < this.rayCount; i++) {
+
+        const forwardRayCount = Math.floor(this.rayCount * 3/4);
+        for (let i = 0; i < forwardRayCount; i++) {
             const rayAngle = lerp(
                 this.rayspread / 2,
                 - this.rayspread / 2,
-                this.rayCount == 1 ? 0.5 : i / (this.rayCount - 1)
+                forwardRayCount == 1 ? 0.5 : i / (forwardRayCount - 1)
             ) + this.car.angle;
+
+            const f = (forwardRayCount - 1) / 2;
+            const l = i <= f ? (i / f) : (2 - i / f);
 
             const start = {x: this.car.x, y: this.car.y};
             const end = {
-                x: this.car.x - Math.sin(rayAngle) * this.rayLength,
-                y: this.car.y - Math.cos(rayAngle) * this.rayLength,
+                x: this.car.x - Math.sin(rayAngle) * this.rayLength * lerp(0.75, 1.5, l),
+                y: this.car.y - Math.cos(rayAngle) * this.rayLength * lerp(0.75, 1.5, l),
+            }
+            this.rays.push([start, end]);
+        }
+
+        const backwardRayCount = Math.ceil(this.rayCount * 1/4);
+        for (let i = 0; i < backwardRayCount; i++) {
+            const rayAngle = Math.PI + lerp(
+                this.rayspread / 3,
+                - this.rayspread / 3,
+                backwardRayCount == 1 ? 0.5 : i / (backwardRayCount - 1)
+            ) + this.car.angle;
+
+            const f = (backwardRayCount - 1) / 2;
+            const l = i <= f ? (i / f) : (2 - i / f);
+
+            const start = {x: this.car.x, y: this.car.y};
+            const end = {
+                x: this.car.x - Math.sin(rayAngle) * this.rayLength * lerp(0.75, 1, l),
+                y: this.car.y - Math.cos(rayAngle) * this.rayLength * lerp(0.75, 1, l),
             }
             this.rays.push([start, end]);
         }
