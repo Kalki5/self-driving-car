@@ -16,7 +16,7 @@ class Car {
 
         if (controlType !== 'DUMMY') {
             this.sensor = new Sensor(this);
-            this.brain = new NeuralNetwork([this.sensor.rayCount, 6, 4]);
+            this.brain = new NeuralNetwork([this.sensor.rayCount, 8, 8, 4]);
         }
         this.controls = new Controls(controlType);
 
@@ -89,10 +89,10 @@ class Car {
         if (this.speed != 0) {
             const flip = this.speed > 0 ? 1 : -1;
             if (this.controls.left) {
-                this.angle += 0.03 * flip;
+                this.angle += 0.015 * flip;
             }
             if (this.controls.right) {
-                this.angle -= 0.03 * flip;
+                this.angle -= 0.015 * flip;
             }
         }
 
@@ -110,13 +110,13 @@ class Car {
         if (this.sensor) {
             this.sensor.update(roadBorders, traffic);
             const offsets = this.sensor.readings.map(s => s === null ? 0 : (1 - s.offset));
-            const outputs = NeuralNetwork.feedForward(offsets, this.brain);
+            const outputs = this.brain.feedForward(offsets);
             
             if (this.useBrain) {
-                this.controls.forward = outputs[0];
-                this.controls.left = outputs[1];
-                this.controls.right = outputs[2];
-                this.controls.reverse = outputs[3];
+                this.controls.forward = outputs[0] > 0.8;
+                this.controls.left = outputs[1] > 0.8;
+                this.controls.right = outputs[2] > 0.8;
+                this.controls.reverse = outputs[3] > 0.8;
             }
         }
     }

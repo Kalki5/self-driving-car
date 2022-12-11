@@ -11,8 +11,10 @@
 <body>
     <canvas id="carCanvas"></canvas>
     <div id="verticalButtons">
-        <button onclick="save()">💾</button>
-        <button onclick="discard()">🗑️</button>
+        <button title="Switch Control" id="switchButton" onclick="switchControl()">👨🏻</button>
+        <button title="Train Model" id="trainButton" onclick="train()">▶️</button>
+        <button title="Save Model" onclick="save()">💾</button>
+        <button title="Discard Model" onclick="discard()">🗑️</button>
     </div>
     <canvas id="networkCanvas"></canvas>
 

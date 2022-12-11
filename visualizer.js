@@ -78,9 +78,11 @@ class Visualizer {
                 ctx.beginPath();
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillStyle = 'black';
-                ctx.strokeStyle = 'white';
-                ctx.font = (nodeRadius) + 'px Arial';
+                ctx.fillStyle = outputs[i] > 0.8 ? 'red' : 'black';
+                ctx.strokeStyle = outputs[i] > 0.8 ? 'red' : 'white';
+                // ctx.fillStyle = 'black';
+                // ctx.strokeStyle = 'white';
+                ctx.font = (outputs[i] > 0.8 ? (1.2 * nodeRadius) : (0.8 * nodeRadius)) + 'px Arial';
                 ctx.fillText(outputLabels[i], x, top);
                 ctx.lineWidth = 0.5;
                 ctx.strokeText(outputLabels[i], x, top);
